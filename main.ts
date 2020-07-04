@@ -14,39 +14,25 @@ input.onButtonPressed(Button.A, function () {
 input.onButtonPressed(Button.AB, function () {
     basic.showIcon(IconNames.Yes)
     if (lookupChar == "") {
-        message = ""
-        radio.sendString(sendMessage)
+        radio.sendString("" + (message))
     } else {
         index = mcode.indexOf(lookupChar)
         currentLetter = letters[index]
         if (currentLetter == "space") {
             message = "" + message + " "
-            sendMessage = "" + sendMessage + ","
         } else {
             message = "" + message + currentLetter
-            sendMessage = "" + sendMessage + lookupChar
         }
         lookupChar = ""
         currentChar = ""
         currentLetter = ""
-        basic.showString(message)
+        basic.showString("" + (message))
     }
 })
 radio.onReceivedString(function (receivedString) {
-    receivedMessage = [receivedString.split(",")]
-    for (let value of receivedMessage) {
-        index = mcode.indexOf(convertToText(value))
-        currentLetter = letters[index]
-        if (currentLetter == "space") {
-            message = "" + message + " "
-        } else {
-            message = "" + message + currentLetter
-        }
-    }
-    lookupChar = ""
-    currentChar = ""
-    currentLetter = ""
-    basic.showString(message)
+    basic.showString(receivedString)
+    basic.pause(5000)
+    message = ""
 })
 input.onButtonPressed(Button.B, function () {
     basic.showLeds(`
@@ -61,20 +47,16 @@ input.onButtonPressed(Button.B, function () {
     music.playTone(659, music.beat(BeatFraction.Whole))
     basic.clearScreen()
 })
-let receivedMessage: string[][] = []
 let currentLetter = ""
 let index = 0
 let mcode: string[] = []
 let letters: string[] = []
 let lookupChar = ""
 let currentChar = ""
-let sendMessage = ""
 let message = ""
 radio.setGroup(1)
 message = ""
-sendMessage = ""
 currentChar = ""
-sendMessage = ""
 lookupChar = ""
 letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "space"]
 mcode = ["01", "1000", "1010", "100", "0", "0010", "110", "0000", "00", "0111", "101", "0100", "11", "10", "111", "0110", "1101", "010", "000", "1", "001", "0001", "011", "1001", "1011", "1100", "1111"]
